@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 
 from src.day1 import day1
+from src.day2 import day2
 
 config_path = "./config.json"
 session_key_key = 'session_key'
@@ -21,7 +22,7 @@ class Config:
     data_dir_path: str
 
 def read_config():
-    # setup config file from config example if not present
+    # setup config file if not present
     if not os.path.isfile(config_path):
         config_settings = {session_key_key: '', data_dir_path_key: default_data_dir_path}
         print('Setting up configuration...')
@@ -70,7 +71,9 @@ def fetch_input(day, year, session_key, data_path_string):
         headers = {'User-Agent': fetch_user_agent}
         response = requests.get(fetch_url_format.format(year=year, day=day), cookies=cookies, headers=headers)
         if response.status_code != 200:
-            print(f"Site returned status code {response.status_code}")
+            print(f"Site returned status code {response.status_code}: {response.content}")
+            return False
+
         content = response.content
         with open(import_file_path, 'wb') as f:
             f.write(content)
@@ -84,14 +87,15 @@ def main():
     year = 2024
     days = {
         1:day1,
+        2:day2,
     }
     config = read_config()
     if config == False:
         return
-    test = config.data_dir_path.format(day='#') + '/' + default_input_file
+    input_example = config.data_dir_path.format(day='#') + '/' + default_input_file
     parser = argparse.ArgumentParser(prog='adventofcode2024')
     parser.add_argument('day', help=f'The Advent of Code day # to run (1-{len(days)})', type=int)
-    parser.add_argument('-f', '--file', help=f'Input file. If not specified, the file {test} will be run', type=str)
+    parser.add_argument('-f', '--file', help=f'Input file. If not specified, the file {input_example} will be run', type=str)
     args = parser.parse_args()
     day = args.day
     file_path = args.file
@@ -114,6 +118,7 @@ def main():
 ''')    
     
     print("                              --- Day %d ---" % day)
+    print(f"Input file: {file_path}")
     lines = []
     try:
         f = open(file_path, "r")
@@ -126,8 +131,10 @@ def main():
     days[day](lines)
     end = datetime.now()
     diff = end - start
-    print("Completed in %d ms" % ((diff.microseconds/1000) + (1000 * diff.seconds)))
-    
+    if diff.seconds == 0 and diff.microseconds < 1000:
+        print("Completed in %d μs" % diff.microseconds)
+    else:
+        print("Completed in %d ms" % ((diff.microseconds/1000) + (1000 * diff.seconds)))
 if __name__ == "__main__":
     main()
 

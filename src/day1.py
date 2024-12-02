@@ -1,19 +1,22 @@
-import src.util as util
+from bisect import insort
+from collections import defaultdict
 
-def day1(lines):
+def day1(lines: list[str]):
     part1 = 0
     part2 = 0
     a = []
     b = []
+    b_dict = defaultdict(int)
     for i in range(len(lines)):
-        left,right = lines[i].split()
-        a.append(int(left))
-        b.append(int(right))
-    a.sort()
-    b.sort()
+        # parse the line into two integers
+        left,right = map(lambda x: int(x), lines[i].split())
+        # insert values into lists a and b in ascending order
+        insort(a, left)
+        insort(b, right)
+        # increment a count of value instances in the right-hand list
+        b_dict[right] += 1
     for i in range(len(lines)):
-        part1 += abs(int(a[i]) - int(b[i]))
+        part1 += abs(a[i] - b[i])
+        part2 += a[i]*b_dict[a[i]]
     print("Part 1:", part1)
-    for n in a:
-        part2 += n*b.count(n)
     print("Part 2:", part2)
