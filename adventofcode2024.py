@@ -7,6 +7,7 @@ from datetime import datetime
 
 from src.day1 import day1
 from src.day2 import day2
+from src.day3 import day3
 
 config_path = "./config.json"
 session_key_key = 'session_key'
@@ -88,6 +89,7 @@ def main():
     days = {
         1:day1,
         2:day2,
+        3:day3,
     }
     config = read_config()
     if config == False:

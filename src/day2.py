@@ -1,4 +1,5 @@
-from copy import deepcopy
+
+import src.util as util
 
 def report_safe(report):
     delta = list(map(lambda x, y: x - y, report[1:], report[:-1]))
@@ -11,11 +12,10 @@ def day2(lines):
     part1 = 0
     part2 = 0
     for line in lines:
-        report = list(map(lambda x: int(x), line.split()))
+        report = util.numbers_in_string(line)
         if report_safe(report): part1 += 1
         for i in range(len(report)):
-            test_report = deepcopy(report)
-            del test_report[i]
+            test_report = report[:i] + report[i+1:]
             if report_safe(test_report):
                 part2 += 1
                 break
