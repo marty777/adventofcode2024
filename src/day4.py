@@ -9,7 +9,7 @@ def sample_grid(grid,x,y,pattern, matches):
         if c != matches[0][i]: match0 = False
         if c != matches[1][i]: match1 = False
         if not (match0 or match1): break
-    return 1 if match0 ^ match1 else 0 # xor 
+    return 1 if match0 ^ match1 else 0
 
 def day4(lines):
     part1 = 0
@@ -34,7 +34,7 @@ def day4(lines):
             # both parts of the x must eval to 1 for part2 
             a = sample_grid(grid, x, y, cross1, part2_matches)
             b = sample_grid(grid, x, y, cross2, part2_matches)
-            if a+b == 2: part2 += (a+b)//2
+            if a+b == 2: part2 += 1
     print("Part 1:", part1)
     print("Part 2:", part2)
     
