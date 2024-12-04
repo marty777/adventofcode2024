@@ -1,5 +1,6 @@
 import functools
 import re
+from collections import defaultdict
 
 ## General helper functions
 
@@ -32,6 +33,15 @@ def read_grid(lines):
         for c in range(len(line)):
             grid[len(grid) - 1].append(line[c])
     return grid
+# read lines of a file and return characters as a defaultdict with default '.', plus the width and height
+def read_grid_dict(lines):
+    grid = {}
+    height = len(lines)
+    width = len(lines[0])
+    for y in range(len(lines)):
+        for x in range(len(lines[y])):
+            grid[(x,y)] = lines[y][x]
+    return defaultdict(lambda: '.', grid), width, height
 def adjacency_4(): return [(0,-1), (1,0), (0,1), (-1,0)]
 def adjacency_5(): return [(0,-1), (1,0), (0,1), (-1,0), (0,0)]
 def adjacency_8(): return [(-1,-1), (0,-1), (1,-1), (-1,0), (1,0), (1,1), (0,1), (1,1)]
