@@ -27,11 +27,7 @@ def day5(lines):
         for i in range(len(update)):
             page = update[i]
             for j in range(i+1, len(update)):
-                if update[j] not in forward_rules[page]:
-                    good = False
-                    break
-            for j in range(0,i):
-                if page in backward_rules[update[j]]:
+                if update[j] in backward_rules[page] or page in forward_rules[update[j]]:
                     good = False
                     break
             if not good:
@@ -55,12 +51,16 @@ def day5(lines):
             inserted = False
             for j in range(len(correct)): # prospective insert at index j
                 good = True
-                for k in range(j, len(correct)):
-                    if correct[k] not in forward_rules[page]:
+                # check previous elements
+                for k in range(0, j):
+                    if correct[k] in forward_rules[page] or page in backward_rules[correct[k]]:
                         good = False
                         break
-                for k in range(0,j):
-                    if page in backward_rules[correct[k]]:
+                if not good:
+                    break
+                # check subsequent elements
+                for k in range(j, len(correct)):
+                     if correct[k] in backward_rules[page] or page in forward_rules[correct[k]]:
                         good = False
                         break
                 if good:
