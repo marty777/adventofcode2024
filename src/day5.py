@@ -8,12 +8,12 @@ def day5(lines):
     # Break the input lines into sections on blank lines
     sections = util.sections(lines)
     # Parse the rules into dictionaries of forward and backward rules
-    forward_rules = defaultdict(list)
-    backward_rules = defaultdict(list)
+    forward_rules = defaultdict(set)
+    backward_rules = defaultdict(set)
     for line in sections[0]:
         vals = util.numbers_in_string(line)
-        forward_rules[vals[0]].append(vals[1])
-        backward_rules[vals[1]].append(vals[0])
+        forward_rules[vals[0]].add(vals[1])
+        backward_rules[vals[1]].add(vals[0])
     # Parse the update lists
     updates = []
     for line in sections[1]:
