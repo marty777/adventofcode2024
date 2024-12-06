@@ -62,7 +62,7 @@ def part2(grid, width, height, guard, original_positions):
         test_guard = deepcopy(guard)
         while True:
             guardstep(grid, test_guard, obstruction)
-            if test_guard.coord() in history and test_guard.dir in history[test_guard.coord()]:
+            if test_guard.dir in history[test_guard.coord()]:
                 cycles_found += 1
                 break
             if outside(test_guard, width, height):
