@@ -64,11 +64,11 @@ def guardstep_jump(obstacles_by_row, obstacles_by_column, guard, width, height):
             else:
                 guard.y = next_obstacle_y - 1
                 obstacle_reached = True
-        case 3: # east
+        case 3: # west
             # get the closest obstacle west of the guard position in this row
             next_obstacle_x = util.last_safe(obstacles_by_row[guard.y][:bisect(obstacles_by_row[guard.y], guard.x)])
             if next_obstacle_x == None:
-                guard.x = width # leave the area
+                guard.x = -1 # leave the area
             else:
                 guard.x = next_obstacle_x + 1
                 obstacle_reached = True

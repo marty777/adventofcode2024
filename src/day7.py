@@ -8,17 +8,43 @@ def digit_len(x): return int(math.floor(math.log10(x))) + 1
 # append the digits of y to x in base 10
 def num_append(x,y): return x*(10**digit_len(y)) + y
 
-# return digits of x in base_n, padded to required_len with zeros
-# digits may be in reverse order, which doesn't matter for this application
-def base_n_digits(x, n, required_len):
-    digits = []
-    while x > 0:
-        digits.append(x % n)
-        x -= (x % n)
-        x //= n
-    while len(digits) < required_len:
-        digits.append(0)
-    return digits
+# test if x ends with the digits of y in base 10
+def ends_with(x,y):
+    #assert x >= y, "ends_with x {} < y {}".format(x,y)
+    if x < y: return False
+    # I guess this works
+    return (x - y) % (10**digit_len(y)) == 0
+
+def remove_end(x,y):
+    assert ends_with(x,y), "incorrect use of remove_end x {} y {}".format(x,y)
+    return (x - y)//(10**digit_len(y))
+
+# recursively search possible permutations of terms from right to left, 
+# performing the inverse of each operation and ruling out any branches where 
+# multiplication or appending (optional) makes the test value impossible to 
+# reach. Recursion returns true if any branch is sucessful at reaching the test
+# value
+def operator_dfs(test_value, terms, include_append = False):
+    if len(terms) == 1:
+        return test_value == terms[0]
+    x = terms[-1]
+    remaining_terms = terms[:-1]
+    # multiplication branch  
+    # the test_value must be divisible by x
+    # if so, recurse on test_value//x term
+    test_remainder = test_value % x
+    if test_remainder == 0:
+        test_quotient = test_value // x
+        if operator_dfs(test_quotient, remaining_terms, include_append): return True
+    # append branch
+    # The test value must end with x
+    # if so, recurse on test_value with x removed
+    if include_append and ends_with(test_value, x): 
+        if operator_dfs(remove_end(test_value, x), remaining_terms, include_append): return True
+    # addition branch
+    # recurse on test_value - x
+    if operator_dfs(test_value - x, remaining_terms, include_append): return True
+    return False
 
 def day7(lines):
     part1 = 0
@@ -27,41 +53,10 @@ def day7(lines):
         vals = util.numbers_in_string(line)
         test_value = util.first(vals)
         nums = vals[1:]
-        n_operators = len(nums) - 1
-        valid = False
-        # try all combinations of the operators +,* until a match is found,
-        # iterating using a counter in base 2
-        for i in range(2**n_operators):
-            base_2_digits = base_n_digits(i,2,n_operators)
-            total = nums[0]
-            for j in range(n_operators):
-                match base_2_digits[j]:
-                    case 0:
-                        total += nums[j+1]
-                    case 1:
-                        total *= nums[j+1]
-            if total == test_value:
-                part1 += test_value
-                part2 += test_value
-                valid = True
-                break
-        # if not already proven valid, try all combinations of the operators 
-        # +,*,|| until a match is found, iterating using a counter in base 3
-        if not valid:
-            for i in range(3**n_operators):
-                base_3_digits = base_n_digits(i,3,n_operators)
-                total = nums[0]
-                for j in range(n_operators):
-                    match base_3_digits[j]:
-                        case 0:
-                            total += nums[j+1]
-                        case 1:
-                            total *= nums[j+1]
-                        case 2:
-                            total = num_append(total, nums[j+1])
-                if total == test_value:
-                    part2 += test_value
-                    break
+        if operator_dfs(test_value, nums, False):
+            part1 += test_value
+            part2 += test_value
+        elif operator_dfs(test_value, nums, True):
+            part2 += test_value
     print("Part 1:", part1)
     print("Part 2:", part2)
-    

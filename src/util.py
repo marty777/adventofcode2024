@@ -99,3 +99,16 @@ def eratosthenes(sqrLimit):
         if not sieve[i]:
             primes.append(i)
     return primes
+
+# this one came in useful once. return the digits of x in base n padded to the
+# required length (or not, if required_len = None)
+def base_n_digits(x, n, required_len = None):
+    digits = []
+    while x > 0:
+        digits.insert(0, x % n)
+        x -= (x % n)
+        x //= n
+    if required_len is not None:
+        while len(digits) < required_len:
+            digits.insert(0,0)
+    return digits
