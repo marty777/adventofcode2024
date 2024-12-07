@@ -20,6 +20,15 @@ def sections(lines):
 def first(x): return x[0]
 def second(x): return x[1]
 def last(x): return x[-1]
+def first_safe(x): 
+    if x is None or len(x) < 1: return None
+    return x[0]
+def second_safe(x): 
+    if x is None or len(x) < 2: return None
+    return x[1]
+def last_safe(x): 
+    if x is None or len(x) < 1: return None
+    return x[-1]
 
 # range helper
 def range_i(a,b): return range(a,b+1) # range inclusive
