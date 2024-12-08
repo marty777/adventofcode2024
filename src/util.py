@@ -1,6 +1,7 @@
 import functools
 import re
 from collections import defaultdict
+import math
 
 ## General helper functions
 
@@ -124,4 +125,20 @@ def modinv(x, m):
     except:
         # exception indicates no modular inverse
         return False
-    
+
+def lcm(a, b):
+    return abs(a*b) // math.gcd(a, b)
+
+# Calculate a remainder satisfying all given congruences with pairwise coprime
+# moduli using the Chinese Remainder Theorem. Congruences are passed as a list 
+# of [[modulus, remainder],...]
+def crt(congruences):
+    sum = 0
+    product = 1
+    for i in range(len(congruences)):
+        product *= congruences[i][0]
+    for i in range(len(congruences)):
+        p = product // congruences[i][0]
+        # pow can calculate a multiplicative modular inverse as of Python 3.8
+        sum += congruences[i][1] * pow(p, -1, congruences[i][0]) * p 
+    return sum % product
