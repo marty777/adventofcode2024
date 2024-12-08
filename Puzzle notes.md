@@ -78,9 +78,9 @@ for i in range(2**n):
     for j in range(n):
         option = (i >> j) & 0b1 # get the jth bit of integer i
         if option == 0:
-            total += term[item+1]
+            total += term[j+1]
         else:
-            total *= term[item+1]
+            total *= term[j+1]
     if total == test_value:
         part1 += test_value
         break
