@@ -112,3 +112,16 @@ def base_n_digits(x, n, required_len = None):
         while len(digits) < required_len:
             digits.insert(0,0)
     return digits
+
+# returns y such that (x*y) % m == 1, or False
+def modinv(x, m):
+    # no possible solutions for a modulus of 1
+    if m == 1:
+        return False
+    try:
+        # viable in Python 3.8 and up
+        return pow(x, -1, m)
+    except:
+        # exception indicates no modular inverse
+        return False
+    

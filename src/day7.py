@@ -5,12 +5,8 @@ import math
 # number of digits of x in base 10
 def digit_len(x): return int(math.floor(math.log10(x))) + 1
 
-# append the digits of y to x in base 10
-def num_append(x,y): return x*(10**digit_len(y)) + y
-
 # test if x ends with the digits of y in base 10
 def ends_with(x,y):
-    #assert x >= y, "ends_with x {} < y {}".format(x,y)
     if x < y: return False
     # I guess this works
     return (x - y) % (10**digit_len(y)) == 0
@@ -19,7 +15,7 @@ def remove_end(x,y):
     assert ends_with(x,y), "incorrect use of remove_end x {} y {}".format(x,y)
     return (x - y)//(10**digit_len(y))
 
-# recursively search possible permutations of terms from right to left, 
+# recursively search possible combinations of operators from right to left, 
 # performing the inverse of each operation and ruling out any branches where 
 # multiplication or appending (optional) makes the test value impossible to 
 # reach. Recursion returns true if any branch is sucessful at reaching the test
@@ -30,14 +26,12 @@ def operator_dfs(test_value, terms, include_append = False):
     x = terms[-1]
     remaining_terms = terms[:-1]
     # multiplication branch  
-    # the test_value must be divisible by x
-    # if so, recurse on test_value//x term
-    test_remainder = test_value % x
-    if test_remainder == 0:
-        test_quotient = test_value // x
-        if operator_dfs(test_quotient, remaining_terms, include_append): return True
+    # the test value must be divisible by x
+    # if so, recurse on test_value//x
+    if test_value % x == 0:
+        if operator_dfs(test_value // x, remaining_terms, include_append): return True
     # append branch
-    # The test value must end with x
+    # the test value must end with x
     # if so, recurse on test_value with x removed
     if include_append and ends_with(test_value, x): 
         if operator_dfs(remove_end(test_value, x), remaining_terms, include_append): return True
