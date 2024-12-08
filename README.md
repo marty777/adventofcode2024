@@ -1,11 +1,13 @@
 # adventofcode2024
 [Advent of Code 2024](https://adventofcode.com/2024) in Python.
 
-## Configuration
+## Setup
 
 ```console
 $ git clone https://github.com/marty777/adventofcode2024
 $ cd adventofcode2024
+$ pip install requests
+$ pip install argparse
 $ python adventofcode2024.py
 Setting up configuration...
 Enter an Advent of Code session key (optional):
@@ -31,6 +33,8 @@ options:
 -h, --help            show this help message and exit
 -f FILE, --file FILE  Input file. If not specified the file ./data/day#/input.txt will be run
 ```
+
+Any input file can be passed in with the `-f` option. By default, the script expect the main input file for a puzzle day to be stored in the directory `./data/day#/input.txt` (e.g. `./data/day1/input.txt` for day 1) and will attempt to load the input file corresponding to the day if no file is otherwise specified. The path for the default data directory can be modified in `./config.json`. If an Advent of Code session key has been configured, the input file for the day will be automatically downloaded to the default input file location if not already present.
 
 ## Example
 

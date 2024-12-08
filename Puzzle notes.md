@@ -2,11 +2,23 @@
 
 Discussion of the solutions for puzzles completed so far. These notes contain spoilers and shouldn't be viewed until you find your own solution.
 
+## Day 1
+
+Puzzle page: [Day 31: Historian Hysteria](https://adventofcode.com/2024/day/1)
+
+Code file: [day1.py](./src/day1.py)
+
+## Day 2
+
+Puzzle page: [Day 2: Red-Nosed Reports](https://adventofcode.com/2024/day/2)
+
+Code file: [day2.py](./src/day2.py)
+
 ## Day 3
 
 Puzzle page: [Day 3: Mull It Over](https://adventofcode.com/2024/day/3)
 
-Code file: [day3.py](./day3.py)
+Code file: [day3.py](./src/day3.py)
 
 <details>
 <summary>Discussion</summary>
@@ -18,7 +30,7 @@ Don't be like me. Learn how to use regexes properly.
 
 Puzzle page: [Day 4: Ceres Search](https://adventofcode.com/2024/day/4)
 
-Code file: [day4.py](./day4.py)
+Code file: [day4.py](./src/day4.py)
 
 <details>
 <summary>Discussion</summary>
@@ -30,9 +42,9 @@ I didn't do any of that. Instead, I just iterated over all rows and columns and 
 
 ## Day 5
 
-Puzzle page: [Day 5: Ceres Search](https://adventofcode.com/2024/day/5)
+Puzzle page: [Day 5: Print Queue](https://adventofcode.com/2024/day/5)
 
-Code file: [day5.py](./day5.py)
+Code file: [day5.py](./src/day5.py)
 
 <details>
 <summary>Discussion</summary>
@@ -48,7 +60,7 @@ For part 2, I used an insertion sort of each page into a new list, where the ins
 
 Puzzle page: [Day 6: Guard Gallivant](https://adventofcode.com/2024/day/6)
 
-Code file: [day6.py](./day6.py)
+Code file: [day6.py](./src/day6.py)
 
 <details>
 <summary>Discussion</summary>
@@ -63,7 +75,7 @@ The solution to part 2 is pretty easily found via brute force and a little waiti
 
 Puzzle page: [Day 7: Bridge Repair](https://adventofcode.com/2024/day/7)
 
-Code file: [day7.py](./day7.py)
+Code file: [day7.py](./src/day7.py)
 
 <details>
 <summary>Discussion</summary>
