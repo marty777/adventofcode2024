@@ -7,9 +7,7 @@ DIRECTIONS = util.adjacency_4()
 # distinct destinations and paths reaching a destination
 def dfs(graph, path, full_paths, destinations):
     # I'm sure there's a way to do tuples of tuples, but paths are currently 
-    # recorded as one long tuple of alternating x and y coords. Tuples are
-    # preferred for paths because they can be hashed, allowing duplicates to be
-    # omitted efficiently in the full_paths set.
+    # recorded as one long tuple of alternating x and y coords.
     pos = (path[-2], path[-1])
     if graph[pos] == 9:
         destinations.add(pos)
