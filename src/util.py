@@ -35,6 +35,7 @@ def last_safe(x):
 def range_i(a,b): return range(a,b+1) # range inclusive
 
 # 2D helpers
+def outside(width, height, coord): return coord[0] < 0 or coord[0] >= width or coord[1] < 0 or coord[1] >= height
 # read lines of a file and return characters as a 2d array
 def read_grid(lines):
     grid = []

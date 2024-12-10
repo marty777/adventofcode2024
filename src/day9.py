@@ -72,8 +72,9 @@ def compact_diskmap(vals, allow_file_fragmentation=True):
             block_index += 1
         else:
             # add emptyblocks
-            emptyblocks.append(EmptyBlock(start=start_index,len=vals[i]))
-            start_index += vals[i]
+            if vals[i] > 0:
+                emptyblocks.append(EmptyBlock(start=start_index,len=vals[i]))
+                start_index += vals[i]
     return compact_and_checksum(fileblocks, emptyblocks)
     
 def day9(lines):

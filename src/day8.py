@@ -2,7 +2,7 @@
 import src.util as util
 from collections import defaultdict
 
-# test if a coord is outside the grid
+# Test if a coord is outside the grid
 def outside(width, height, coord):
     return coord[0] < 0 or coord[0] >= width or coord[1] < 0 or coord[1] >= height
 
@@ -20,7 +20,6 @@ def day8(lines):
     part1_antinodes = set()
     part2_antinodes = set()
 
-    # part 1
     for symbol in antennae:
         symbol_group = list(antennae[symbol])
         symbol_antinodes1 = set()

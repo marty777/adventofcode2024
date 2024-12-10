@@ -24,7 +24,7 @@ adventofcode2024: error: the following arguments are required: day
 ## Usage
 
 ```console
-$ adventofcode2024 [-h] [-f FILE] day
+$ python adventofcode2024.py [-h] [-f FILE] day
 
 positional arguments:
 day                   The Advent of Code day # to run
@@ -41,13 +41,13 @@ Any input file can be passed in with the `-f` option. By default, the script exp
 To run day 1:
 
 ```console
-$ python adventofcode2024 -f data/day1/input.txt 1 
+$ python adventofcode2024.py -f data/day1/input.txt 1 
 ```
 
 With the default data directory config setting, this is equivalent to
 
 ```console
-$ python adventofcode2024 1
+$ python adventofcode2024.py 1
 ```
 
 If an Advent of Code session key has been configured, the input file for the specified day will be automatically downloaded and saved to the expected location. If not, the `input.txt` file for the intended day should be manually saved first.
