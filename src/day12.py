@@ -1,7 +1,7 @@
 
 import src.util as util
 from collections import defaultdict
-from bisect import insort, bisect
+from bisect import insort
 
 DIRECTIONS = util.adjacency_4()
 UP = DIRECTIONS[0]
@@ -23,7 +23,6 @@ def flood_region(x,y, grid, found, regions):
                 continue
             found[pos] = True
             curr_group.add(pos)
-
             for d in DIRECTIONS:
                 next = util.coord_sum(pos,d)
                 if grid[next] == grid[pos]:
@@ -31,9 +30,10 @@ def flood_region(x,y, grid, found, regions):
                         queue_next.append(next)
     regions.append(curr_group)
 
-# Run along the row/col for a directional border. 
-# Return the count of elements as the perimeter part and the count of groups of 
-# continguous elements as the sides part.
+# For each row/column in the provided directional border grouping add the 
+# number of border cells to the perimeter and the count of the number of 
+# continguous border cell groups to the side count. Return total perimeter and
+# side count.
 def directional_perimeter(border, dim):
     perimeter = 0
     sides = 0
@@ -42,7 +42,6 @@ def directional_perimeter(border, dim):
         left_count = 0
         if len(border[d]) == 0:
             continue
-        
         last = None
         for i in range(len(border[d])):
             if last == None:
@@ -53,12 +52,12 @@ def directional_perimeter(border, dim):
             last = border[d][i]
     return perimeter, sides
 
-# General idea:
-# Find all borders in the up, down, left and right directions by finding 
-# elements in the region without a neighbor in that direction. Sort each 
-# directional border by row/column.
-# A straight edge is a contingious set of border cells in a direction on a 
-# row/column. Any break in the set indicates a new edge.
+# Find all border plots in the up, down, left and right directions by finding 
+# plots in the region without a neighboring plot in that direction. Group each 
+# border cell in a direction by row/column and order them in each row/column 
+# group.
+# A side is a contingious set of border cells on a directional border within a 
+# row/column. Any break in the set indicates a new side.
 def find_perimeter(region, width, height):
     ups = defaultdict(list)
     lefts =  defaultdict(list)
@@ -78,7 +77,7 @@ def find_perimeter(region, width, height):
         if util.coord_sum(p, RIGHT) not in region:
             insort(rights[p[0]], p[1])
     # Find the perimeter and side counts in each row/column and border 
-    # direction    
+    # direction and return totals
     up_perimeter, up_sides = directional_perimeter(ups, width)
     sides += up_sides
     perimeter += up_perimeter
@@ -91,7 +90,6 @@ def find_perimeter(region, width, height):
     right_perimeter, right_sides = directional_perimeter(rights, height)
     sides += right_sides
     perimeter += right_perimeter
-    
     return perimeter, sides
 
 def day12(lines):
@@ -107,12 +105,11 @@ def day12(lines):
             if found[(x,y)]:
                 continue
             flood_region(x,y,grid,found,regions)
-    
+    # Evaluate each region
     for r in regions:
         perimeter, sides = find_perimeter(r, width, height)
         part1 += len(r) * perimeter
         part2 += len(r) * sides
-
     print("Part 1:", part1)
     print("Part 2:", part2)
     
