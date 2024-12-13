@@ -5,9 +5,10 @@ import numpy as np
 def day13(lines):
     part1 = 0
     part2 = 0
-    # split the input into sections on blank lines
+    # Split the input into sections on blank lines
     sections = util.sections(lines)
     for s in sections:
+        # Get parameters for the section
         AX, AY = util.numbers_in_string(s[0])
         BX, BY = util.numbers_in_string(s[1])
         prizeX_1, prizeY_1 = util.numbers_in_string(s[2])
@@ -24,6 +25,7 @@ def day13(lines):
             AB_inverse = np.linalg.inv(AB_matrix)
         except:
             continue
+        
         # Part 1: Calculate an integer A,B that satisfy the system of equations 
         # resulting in the prize coords.
         prize_vector1 = np.array([[prizeX_1], 
@@ -43,7 +45,7 @@ def day13(lines):
         AB_vector2 = np.matmul(AB_inverse, prize_vector2)
         A2 = int(round(AB_vector2[0][0]))
         B2 = int(round(AB_vector2[1][0]))
-        # Verify the integer system works, and add it to the part 1 token cost
+        # Verify the integer system works, and add it to the part 2 token cost
         # if so
         if AX * A2 + BX * B2 == prizeX_2 and AY * A2 + BY * B2  == prizeY_2: 
             part2 += 3 * A2  + 1 * B2
