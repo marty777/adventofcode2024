@@ -38,10 +38,9 @@ def directional_perimeter(border, dim):
     perimeter = 0
     sides = 0
     for d in range(dim):
-        perimeter += len(border[d])
-        left_count = 0
         if len(border[d]) == 0:
             continue
+        perimeter += len(border[d])
         last = None
         for i in range(len(border[d])):
             if last == None:
