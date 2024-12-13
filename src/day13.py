@@ -5,16 +5,14 @@ import src.util as util
 # a_presses, b_presses by inverting the matrix M for the system of linear 
 # equations of the a and b buttons and multiplying by [[prize_x], [prize_y]]
 def prize_solver(aX, aY, bX, bY, prizeX, prizeY):
-    assert aX*bY - aY*bX != 0, "Determinant is zero"
-    # build an inverse matrix of [[aX, bX], [aY, bY]]
-    # leaving the determinant multiplication for the end
+    assert aX*bY - aY*bX != 0, "Determinant denominator is zero"
+    # Build an inverse matrix of [[aX, bX], [aY, bY]] leaving the determinant 
+    # multiplication for the end
     inverse_matrix = [ [bY, -bX],
                        [-aY, aX] ]
-    prize_vector = [prizeX,
-                    prizeY]
-    presses_vector = [inverse_matrix[0][0] * prize_vector[0] + inverse_matrix[0][1] * prize_vector[1], 
-                      inverse_matrix[1][0] * prize_vector[0] + inverse_matrix[1][1] * prize_vector[1]]
-    # return only integer solutions
+    presses_vector = [inverse_matrix[0][0] * prizeX + inverse_matrix[0][1] * prizeY, 
+                      inverse_matrix[1][0] * prizeX + inverse_matrix[1][1] * prizeY]
+    # Return only integer solutions
     if presses_vector[0] % (aX*bY - aY*bX) == 0 and presses_vector[1] % (aX*bY - aY*bX) == 0:
         return presses_vector[0]//(aX*bY - aY*bX), presses_vector[1]//(aX*bY - aY*bX)
     return False, False
