@@ -8,7 +8,6 @@ $ git clone https://github.com/marty777/adventofcode2024
 $ cd adventofcode2024
 $ pip install requests
 $ pip install argparse
-$ pip install numpy
 $ python adventofcode2024.py
 Setting up configuration...
 Enter an Advent of Code session key (optional):

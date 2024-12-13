@@ -1,7 +1,24 @@
 
 import src.util as util
-import numpy as np
 
+# Solve the system [a_presses, b_presses] * M = [[prize_x], [prize_y]] for 
+# a_presses, b_presses by inverting the matrix M for the system of linear 
+# equations of the a and b buttons and multiplying by [[prize_x], [prize_y]]
+def prize_solver(aX, aY, bX, bY, prizeX, prizeY):
+    assert aX*bY - aY*bX != 0, "Determinant is zero"
+    # build an inverse matrix of [[aX, bX], [aY, bY]]
+    # leaving the determinant multiplication for the end
+    inverse_matrix = [ [bY, -bX],
+                       [-aY, aX] ]
+    prize_vector = [prizeX,
+                    prizeY]
+    presses_vector = [inverse_matrix[0][0] * prize_vector[0] + inverse_matrix[0][1] * prize_vector[1], 
+                      inverse_matrix[1][0] * prize_vector[0] + inverse_matrix[1][1] * prize_vector[1]]
+    # return only integer solutions
+    if presses_vector[0] % (aX*bY - aY*bX) == 0 and presses_vector[1] % (aX*bY - aY*bX) == 0:
+        return presses_vector[0]//(aX*bY - aY*bX), presses_vector[1]//(aX*bY - aY*bX)
+    return False, False
+    
 def day13(lines):
     part1 = 0
     part2 = 0
@@ -14,42 +31,14 @@ def day13(lines):
         prizeX_1, prizeY_1 = util.numbers_in_string(s[2])
         prizeX_2 = prizeX_1 + 10000000000000
         prizeY_2 = prizeY_1 + 10000000000000
-
-        # Solve the system of linear equations for A and B, or rather have 
-        # numpy do it for us, by inverting the [A,B] matrix
-        AB_matrix = np.array([ [AX, BX], 
-                               [AY, BY] ])
-        # Added for safety, but all of the input systems of equations have 
-        # invertible matrices
-        try:
-            AB_inverse = np.linalg.inv(AB_matrix)
-        except:
-            continue
-        
-        # Part 1: Calculate an integer A,B that satisfy the system of equations 
-        # resulting in the prize coords.
-        prize_vector1 = np.array([[prizeX_1], 
-                                 [prizeY_1]])
-        AB_vector1 = np.matmul(AB_inverse, prize_vector1)
-        A1 = int(round(AB_vector1[0][0]))
-        B1 = int(round(AB_vector1[1][0]))
-        # Verify the integer system works, and add it to the part 1 token cost
-        # if so
-        if AX * A1 + BX * B1 == prizeX_1 and AY * A1 + BY * B1  == prizeY_1: 
-            part1 += 3 * A1  + 1 * B1
-        
-        # Part 2: Calculate an integer A,B that satisfy the system of equations 
-        # resulting in the extended prize coords.
-        prize_vector2 = np.array([[prizeX_2], 
-                                 [prizeY_2]])
-        AB_vector2 = np.matmul(AB_inverse, prize_vector2)
-        A2 = int(round(AB_vector2[0][0]))
-        B2 = int(round(AB_vector2[1][0]))
-        # Verify the integer system works, and add it to the part 2 token cost
-        # if so
-        if AX * A2 + BX * B2 == prizeX_2 and AY * A2 + BY * B2  == prizeY_2: 
-            part2 += 3 * A2  + 1 * B2
-
+        # Solve the systems of linear equations for part 1 and part 2 using 
+        # inverse matrices, since each input system is invertible.
+        a_presses1, b_presses1 = prize_solver(AX, AY, BX, BY, prizeX_1, prizeY_1)
+        if a_presses1 is not False:
+            part1 += 3 * a_presses1  + 1 * b_presses1
+        a_presses2, b_presses2 = prize_solver(AX, AY, BX, BY, prizeX_2, prizeY_2)
+        if a_presses2 is not False:
+            part2 += 3 * a_presses2  + 1 * b_presses2
     print("Part 1:", part1)
     print("Part 2:", part2)
     
