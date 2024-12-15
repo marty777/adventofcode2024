@@ -104,6 +104,31 @@ def read_widegrid(grid_lines, moves):
                 grid[(x+1,y)] = '.'
     return grid, width, height, robot, boxes
 
+def print_grid(grid, width, height, robot, boxes, wide=False):
+    for y in range(height):
+        for x in range(width):
+            if(x,y) == robot.pos:
+                print('@', end='')
+            elif grid[(x,y)] == '#':
+                print('#', end='')
+            # box
+            else:
+                box_found = False
+                for b in boxes:
+                    if b.pos == (x,y):
+                        box_found = True
+                        if wide:
+                            print('[', end='')
+                        else:
+                            print('O', end='')
+                    elif wide and b.pos == (x-1,y):
+                        box_found = True
+                        print(']', end='')
+                    if box_found: break
+                if not box_found:
+                    print('.', end='')
+        print("")
+
 def day15(lines):
     part1 = 0
     part2 = 0
@@ -128,8 +153,11 @@ def day15(lines):
 
     # Read the widened grid and set up the robot and boxes
     grid2, width2, height2, robot2, boxes2 = read_widegrid(sections[0], moves)
-    # Step robot through part2
+    # Step robot through part 2
     for i in range(len(robot2.moves)):
+        if i >= len(robot2.moves) - 3:
+            print(f"STEP {i}")
+            print_grid(grid2, width2, height2, robot2, boxes2, wide=True)
         robot2.step(grid2, boxes2, wide=True)
     # Score part 2
     for b in boxes2:
