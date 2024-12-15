@@ -58,6 +58,7 @@ def adjacency_5(): return [(0,-1), (1,0), (0,1), (-1,0), (0,0)]
 def adjacency_8(): return [(-1,-1), (0,-1), (1,-1), (-1,0), (1,0), (1,1), (0,1), (1,1)]
 def adjacency_9(): return [(-1,-1), (0,-1), (1,-1), (-1,0), (0,0), (1,0), (1,1), (0,1), (1,1)]
 def coord_sum(a,b): return (a[0] + b[0], a[1] + b[1])
+def arrow_dirs(): return {'^': (0,-1), '>': (1,0), 'v': (0,1), '<': (-1,0)}
 
 # sum of a list of numeric items
 def sum_list(list):

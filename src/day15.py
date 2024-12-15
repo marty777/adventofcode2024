@@ -2,8 +2,7 @@
 import src.util as util
 from dataclasses import dataclass
 
-DIRS = util.adjacency_4()
-DIRECTIONS = {'^': DIRS[0], '>': DIRS[1], 'v': DIRS[2], '<': DIRS[3]}
+DIRECTIONS = util.arrow_dirs()
 
 @dataclass
 class Box:
@@ -17,8 +16,14 @@ class Robot:
     pos:tuple
     move_index:int
     moves:list
-    def widestep2(self, grid, boxes, wide=False):
+    def step(self, grid, boxes, wide=False):
         box_offset = (1,0)
+        # build a lookup of current box positions
+        box_positions = {}
+        for b in boxes:
+            box_positions[b.pos] = b.id
+            if wide:
+                box_positions[util.coord_sum(b.pos, box_offset)] = b.id
         # Determine next position of robot, if able to move
         move_dir = self.moves[self.move_index]
         robot_next = util.coord_sum(self.pos, DIRECTIONS[move_dir])
@@ -26,25 +31,25 @@ class Robot:
         self.move_index = (self.move_index + 1) % len(self.moves)
         # Determine any box or boxes affected by move
         next_positions = {robot_next}
+        new_positions = {robot_next}
         box_ids = set()
         # Repeatedly add boxes to move group until no more found
         while True:
-            box_found = False
-            for b in boxes:
-                if b.id in box_ids:
-                    continue
-                box_positions = {b.pos}
+            new_boxes = set()
+            for p in new_positions:
+                if p in box_positions and box_positions[p] not in box_ids:
+                    new_boxes.add(box_positions[p])
+                    box_ids.add(box_positions[p])
+            new_positions.clear()
+            for box_id in new_boxes:
+                next_box_positions = {util.coord_sum(boxes[box_id].pos, DIRECTIONS[move_dir])}
                 if wide:
-                    box_positions.add(util.coord_sum(b.pos, box_offset))
-                if box_positions.intersection(next_positions):
-                    box_ids.add(b.id)
-                    box_found = True
-                    for p in box_positions:
-                        next_positions.add(util.coord_sum(p, DIRECTIONS[move_dir]))
-                    break
-            if not box_found:
+                    next_box_positions.add(util.coord_sum(util.coord_sum(boxes[box_id].pos, box_offset), DIRECTIONS[move_dir]))
+                new_positions = new_positions | next_box_positions
+                next_positions = next_positions | next_box_positions
+            if len(new_boxes) == 0:
                 break
-        # determine if the group can move
+        # Determine if the group can move
         can_move = True
         for p in next_positions:
             if grid[p] == '#':
@@ -52,11 +57,12 @@ class Robot:
                 break
         if not can_move:
             return
+        # Move the box group and the robot
         for box_id in box_ids:
             boxes[box_id].pos = util.coord_sum(boxes[box_id].pos, DIRECTIONS[move_dir])
         self.pos = robot_next
-        return
 
+# Read the regular grid, robot and boxes
 def read_grid(grid_lines, moves):
     grid, width, height = util.read_grid_dict(grid_lines)
     boxes = []
@@ -70,6 +76,7 @@ def read_grid(grid_lines, moves):
                 grid[(x,y)] = '.'
     return grid, width, height, robot, boxes
 
+# Read the expanded grid, robot and boxes
 def read_widegrid(grid_lines, moves):
     lines2 = []
     for line in grid_lines:
@@ -114,7 +121,7 @@ def day15(lines):
     grid, width, height, robot, boxes = read_grid(sections[0], moves)
     # Step robot through part 1
     for i in range(len(robot.moves)):
-        robot.widestep2(grid, boxes, wide=False)
+        robot.step(grid, boxes, wide=False)
     # Score part 1
     for b in boxes:
         part1 += b.score()
@@ -123,7 +130,7 @@ def day15(lines):
     grid2, width2, height2, robot2, boxes2 = read_widegrid(sections[0], moves)
     # Step robot through part2
     for i in range(len(robot2.moves)):
-        robot2.widestep2(grid2, boxes2, wide=True)
+        robot2.step(grid2, boxes2, wide=True)
     # Score part 2
     for b in boxes2:
         part2 += b.score()
