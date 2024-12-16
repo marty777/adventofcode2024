@@ -155,9 +155,6 @@ def day15(lines):
     grid2, width2, height2, robot2, boxes2 = read_widegrid(sections[0], moves)
     # Step robot through part 2
     for i in range(len(robot2.moves)):
-        if i >= len(robot2.moves) - 3:
-            print(f"STEP {i}")
-            print_grid(grid2, width2, height2, robot2, boxes2, wide=True)
         robot2.step(grid2, boxes2, wide=True)
     # Score part 2
     for b in boxes2:
