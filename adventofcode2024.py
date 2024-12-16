@@ -20,6 +20,7 @@ from src.day12 import day12
 from src.day13 import day13
 from src.day14 import day14
 from src.day15 import day15
+from src.day16 import day16
 
 config_path = "./config.json"
 session_key_key = 'session_key'
@@ -114,6 +115,7 @@ def main():
         13:day13,
         14:day14,
         15:day15,
+        16:day16,
     }
     config = read_config()
     if config == False:
