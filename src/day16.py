@@ -1,9 +1,7 @@
 
 import src.util as util
-from collections import defaultdict
 from dataclasses import dataclass
 from copy import deepcopy
-from bisect import insort, bisect
 
 DIRECTIONS = util.arrow_dirs()
 TURNS = {'^': ['<','>'],'>': ['^','v'],'v': ['<','>'], '<': ['^','v']}
