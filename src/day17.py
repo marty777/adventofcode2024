@@ -18,7 +18,7 @@ class Program:
         elif val == 5:
             return self.B
         elif val == 6:
-            return self.B
+            return self.C
         # assume val will never be 7
     def execute(self):
         if self.terminated:
@@ -60,12 +60,12 @@ class Program:
             self.terminated = True
 
 # Find a quine of the input program by trialing new tribit terms until 
-# the all digits can be matched.
+# all digits can be matched.
 def quine_find(program):
     candidates = { 0 }
     # Starting with the final digit of the program and working backwards
-    # find each prev_candidate << 3 + new tribits that adds the correct next
-    # digit as the first output by the program
+    # find each prev_candidate << 3 + tribit that adds the correct digit 
+    # as the first output by the program
     for num in reversed(program):
         new_candidates = set()
         for c in candidates:
