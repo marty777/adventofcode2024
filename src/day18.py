@@ -50,8 +50,8 @@ def day18(lines):
     start = (0,0)
     destination =(70,70)
     
-    # Load the grid, with each falling byte marked as an integer >= 0 by index
-    # and all other positions marked as -1
+    # Load the grid, with each falling byte marked as an integer >= 1 by index
+    # and all other positions marked as 0
     grid = defaultdict(int)
     for i in range(len(lines)):
         vals = util.numbers_in_string(lines[i])
