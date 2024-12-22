@@ -10,7 +10,7 @@ class DijkstraNode:
     dist: int
     path: str
 
-# return all button sequences that navigate from src_button to dst_button 
+# Return all button sequences that navigate from src_button to dst_button 
 # with minimal length
 def button_dijkstra(buttons, src_button, dst_button):
     inverse_buttons = {}
@@ -21,7 +21,6 @@ def button_dijkstra(buttons, src_button, dst_button):
     bests = []
     queue_next = []
     queue_next.append(DijkstraNode(buttons[src_button], 0, ''))
-    # Fully explore paths from src to dst
     while len(queue_next) > 0:
         queue = queue_next
         queue_next = []
@@ -51,8 +50,8 @@ def button_dijkstra(buttons, src_button, dst_button):
         final.append(b.path)
     return final
 
-
-
+# Find the length of a minimal number of numpad button presses at the specified 
+# depth needed to produce the given code
 def arrowpad_recurser(code, depth, transition_cache, replacement_cache):
     if (code, depth) in replacement_cache:
         return replacement_cache[(code, depth)]
@@ -74,14 +73,16 @@ def arrowpad_recurser(code, depth, transition_cache, replacement_cache):
     return replacement_cache[(code, depth)]
 
 
-# Find all possible arrow button presses for the given numpad code of minimal length
+# Find all possible arrow button presses for the given numpad code of minimal 
+# length
 def numpad_code_to_arrow_presses(code, arrow_button_cache):
     result_set = set()
     for option in arrow_button_cache[('A', code[0])]:
         code_composer(code, 0, option, arrow_button_cache, result_set)
     return result_set
 
-# Recursively explore possible mappings of arrow button sequences to numpad button presses
+# Recursively explore possible mappings of arrow button sequences to numpad 
+# button presses
 def code_composer(code, position, partial, transition_cache, result_set):
     if position == len(code) - 1:
         result_set.add(partial)
