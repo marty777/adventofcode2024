@@ -64,18 +64,18 @@ def day20(lines):
     # Read the grid and dimensions as a defaultdict indexed by tuple (x,y)
     grid, width, height = util.read_grid_dict(lines)
     # Build offset diamonds for manhattan ranges 2 and 20
-    obst_len_1 = 2
-    obst_len_list_1 = set()
-    for x in range(-obst_len_1, obst_len_1+1):
-        for y in range(-obst_len_1, obst_len_1+1):
-            if abs(x) + abs(y) <= obst_len_1:
-                obst_len_list_1.add((x,y))
-    obst_len_2 = 20
-    obst_len_list_2 = set()
-    for x in range(-obst_len_2, obst_len_2+1):
-        for y in range(-obst_len_2, obst_len_2+1):
-            if abs(x) + abs(y) <= obst_len_2:
-                obst_len_list_2.add((x,y))
+    cheat_length_part1 = 2
+    manhattan_diamond_part1 = set()
+    for x in range(-cheat_length_part1, cheat_length_part1+1):
+        for y in range(-cheat_length_part1, cheat_length_part1+1):
+            if abs(x) + abs(y) <= cheat_length_part1:
+                manhattan_diamond_part1.add((x,y))
+    cheat_length_part2 = 20
+    manhattan_diamond_part2 = set()
+    for x in range(-cheat_length_part2, cheat_length_part2+1):
+        for y in range(-cheat_length_part2, cheat_length_part2+1):
+            if abs(x) + abs(y) <= cheat_length_part2:
+                manhattan_diamond_part2.add((x,y))
     # Find start and end coords
     start = None
     end = None
@@ -86,8 +86,8 @@ def day20(lines):
             elif grid[(x,y)] == 'E':
                 end = (x,y)
             
-    part1 = dijkstra(grid, start, end, obst_len_list_1, 100)
-    part2 = dijkstra(grid, start, end, obst_len_list_2, 100)
+    part1 = dijkstra(grid, start, end, manhattan_diamond_part1, 100)
+    part2 = dijkstra(grid, start, end, manhattan_diamond_part2, 100)
     
     print("Part 1:", part1)
     print("Part 2:", part2)
