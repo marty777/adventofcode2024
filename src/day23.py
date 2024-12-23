@@ -1,7 +1,6 @@
 
 import src.util as util
 from collections import defaultdict
-
 from itertools import product
 
 def day23(lines):
@@ -38,10 +37,9 @@ def day23(lines):
             part1 += 1
 
     # Part 2
-    # Find all fully connected node groups
-    big_sets = []
-    # For each node, if not already added to a fully-connected group, find all
-    # fully connected members of the same group via a BFS
+    # Find all fully connected node sets
+    fully_connected_sets = []
+    # For each node find all fully connected members of the same group via a BFS
     for n in node_connections:
         n_set = set()
         frontier_next = list(node_connections[n])
@@ -63,12 +61,12 @@ def day23(lines):
                     for node_neighbor in node_connections[node]:
                         frontier_next.append(node_neighbor)
         if len(n_set) > 0:
-            big_sets.append(n_set)
+            fully_connected_sets.append(n_set)
     # Find the biggest fully-connected set, sort the nodes alphabetically and
     # return as a comma-separated string
     biggest_set = None
     biggest_len = -1
-    for s in big_sets:
+    for s in fully_connected_sets:
         print(s)
         if len(s) > biggest_len:
             biggest_len = len(s)
