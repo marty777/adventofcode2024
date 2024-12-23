@@ -39,9 +39,13 @@ def day23(lines):
     # Part 2
     # Find all fully connected node sets
     fully_connected_sets = []
+    found = defaultdict(bool)
     # For each node find all fully connected members of the same group via a BFS
     for n in node_connections:
-        n_set = set()
+        if found[n]:
+            continue
+        found[n] = True
+        n_set = {n}
         frontier_next = list(node_connections[n])
         frontier = []
         while len(frontier_next) > 0:
@@ -58,6 +62,7 @@ def day23(lines):
                         break
                 if in_set:
                     n_set.add(node)
+                    found[node] = True
                     for node_neighbor in node_connections[node]:
                         frontier_next.append(node_neighbor)
         if len(n_set) > 0:
@@ -67,7 +72,6 @@ def day23(lines):
     biggest_set = None
     biggest_len = -1
     for s in fully_connected_sets:
-        print(s)
         if len(s) > biggest_len:
             biggest_len = len(s)
             biggest_set = s
