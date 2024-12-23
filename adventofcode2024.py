@@ -27,6 +27,7 @@ from src.day19 import day19
 from src.day20 import day20
 from src.day21 import day21
 from src.day22 import day22
+from src.day23 import day23
 
 config_path = "./config.json"
 session_key_key = 'session_key'
@@ -128,6 +129,7 @@ def main():
         20:day20,
         21:day21,
         22:day22,
+        23:day23,
     }
     config = read_config()
     if config == False:
